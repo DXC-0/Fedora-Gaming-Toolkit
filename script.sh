@@ -28,7 +28,7 @@ install_gpu_driver() {
     dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
   elif echo "$GPU_INFO" | grep -qi "AMD"; then
     echo "GPU AMD détecté"
-    dnf install -y xorg-x11-drv-amdgpu
+    dnf install -y mesa-dri-drivers mesa-libGL mesa-vulkan-drivers
   elif echo "$GPU_INFO" | grep -qi "Intel"; then
     echo "GPU Intel détecté"
   else
