@@ -45,9 +45,25 @@ install_codecs() {
 }
 
 install_gaming_tools() {
-  echo "📦 Installation des outils de gaming..."
-  dnf install -y steam lutris heroic-game-launcher
+  echo "🎮 Installation des outils gaming..."
+  echo "📦 Installation de Lutris"
+  dnf install -y lutris
+  echo "📦 Installation de Steam"
+  dnf install -y steam
+  echo "📦 Installation de Wine et dépendances"
+  dnf install -y wine winetricks
+  echo "📦 Installation de Heroic Games Launcher"
+  TMP_DIR="/tmp/heroic-install"
+  mkdir -p "$TMP_DIR"
+  cd "$TMP_DIR"
+  RPM_URL="https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.18.1/heroic-2.18.1.rpm"
+  wget "$RPM_URL" -O heroic.rpm
+  dnf install -y ./heroic.rpm
+  rm -rf "$TMP_DIR"
+  
+  echo "✅ Outils gaming installés !"
 }
+
 
 install_proton_ge() {
   echo "📦 Installation de Proton GE (GloriousEggroll)..."
