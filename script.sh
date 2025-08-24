@@ -46,7 +46,7 @@ install_codecs() {
 
 install_gaming_tools() {
   echo "📦 Installation des outils de gaming..."
-  dnf install -y steam lutris heroic
+  dnf install -y steam lutris heroic-game-launcher
 }
 
 install_proton_ge() {
