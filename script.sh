@@ -97,23 +97,32 @@ install_proton_cachyos() {
   cd "$PROTON_DIR" || return 1
 
   echo "Recherche de la dernière version de proton"
-  LATEST_URL=$(curl -s https://api.github.com/repos/CachyOS/proton-cachyos/releases/latest | grep "browser_download_url" | grep ".tar.xz" | cut -d '"' -f 4)
+  DOWNLOAD_URL=$(curl -s https://github.com/CachyOS/proton-cachyos/releases | grep -oP 'https://share\.cachyos\.org/proton/[^"]+\.tar\.xz' | head -n 1)
 
-  if [[ -z "$LATEST_URL" ]]; then
-    echo "Impossible de récupérer la dernière version"
+  if [[ -z "$DOWNLOAD_URL" ]]; then
+    echo "Aucun lien valide trouvé sur la page des releases"
     return 1
   fi
 
-  FILE_NAME=$(basename "$LATEST_URL")
+  FILE_NAME=$(basename "$DOWNLOAD_URL")
   echo "📦 Téléchargement : $FILE_NAME"
-  wget "$LATEST_URL"
+  wget -q --show-progress "$DOWNLOAD_URL" -O "$FILE_NAME"
+
+  if [[ ! -f "$FILE_NAME" || $(stat -c%s "$FILE_NAME") -lt 10000 ]]; then
+    echo "Fichier invalide ou trop petit. Téléchargement échoué."
+    rm -f "$FILE_NAME"
+    return 1
+  fi
 
   echo "Extraction..."
-  tar -xvf "$FILE_NAME"
-  rm "$FILE_NAME"
+  tar -xvf "$FILE_NAME" || { echo "Échec de l'extraction."; rm -f "$FILE_NAME"; return 1; }
+
+  echo "Nettoyage..."
+  rm -f "$FILE_NAME"
 
   echo "✅ Proton-CachyOS installé"
 }
+
 
 while true; do
   echo ""
