@@ -91,10 +91,10 @@ install_proton_ge() {
 }
 
 install_proton_cachyos() {
-  echo "📦 Installation de Proton-CachyOS"
+  echo "📦 Installation de Proton-CachyOS..."
   PROTON_DIR="$HOME/.steam/root/compatibilitytools.d"
   mkdir -p "$PROTON_DIR"
-  cd "$PROTON_DIR"
+  cd "$PROTON_DIR" || return 1
 
   echo "Recherche de la dernière version de proton"
   LATEST_URL=$(curl -s https://api.github.com/repos/CachyOS/proton-cachyos/releases/latest | grep "browser_download_url" | grep ".tar.xz" | cut -d '"' -f 4)
@@ -105,7 +105,7 @@ install_proton_cachyos() {
   fi
 
   FILE_NAME=$(basename "$LATEST_URL")
-  echo "Téléchargement : $FILE_NAME"
+  echo "📦 Téléchargement : $FILE_NAME"
   wget "$LATEST_URL"
 
   echo "Extraction..."
