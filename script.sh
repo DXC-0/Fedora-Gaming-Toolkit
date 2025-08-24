@@ -45,7 +45,7 @@ install_codecs() {
 }
 
 install_gaming_tools() {
-  echo "🎮 Installation des outils gaming..."
+  echo "📦 Installation des outils gaming..."
   echo "📦 Installation de Lutris"
   dnf install -y lutris
   echo "📦 Installation de Steam"
